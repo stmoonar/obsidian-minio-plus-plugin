@@ -10,6 +10,9 @@ export default {
 	'Enter your bucket': 'Enter your bucket',
 	'Enter your port': 'Enter your port',
 
+	'Enter your base path(e.g. /path)': 'Enter your base path(e.g. /path)',
+	'Enter your custom domain(e.g. https://minio.example.com)': 'Enter your custom domain(e.g. https://minio.example.com)',
+
 	'Object rules': 'Object rules',
 	'Object naming rules': 'Naming rules',
 	'Naming rules description': 'Naming a local file name will overwrite a file with the same name, so it is necessary to set the bucket appropriately. However, timestamp naming is not readable.',

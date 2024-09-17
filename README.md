@@ -1,6 +1,17 @@
-# Obsidian Minio Uploader Plugin
+# Obsidian Minio Plus Plugin
 
 ### English | [中文](./README-zh.md)
+
+This repository is forked from [Obsidian Minio Uploader Plugin](https://github.com/seebin/obsidian-minio-uploader-plugin) and added some new features.
+- Support base path
+- Support custom domain
+
+In the future, I will add more features to this plugin.
+- Support for deleting files
+
+---
+
+Below is the original content of the README.md file.
 
 Upload images, videos, audio, PDFs, and other files to Minio OSS instead of copying them locally. Reduce the size of local disk usage and improve the efficiency of synchronization between multiple devices.
 

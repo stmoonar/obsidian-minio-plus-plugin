@@ -1,10 +1,10 @@
 {
-	"id": "minio-uploader",
-	"name": "Minio Uploader",
-	"version": "1.0.2",
+	"id": "minio-plus",
+	"name": "Minio plus",
+	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Upload images, videos, audio, pdf, and other files to Minio OSS.",
-	"author": "Seebin",
-	"authorUrl": "https://www.seebin.com",
+	"author": "stmoonar",
+	"authorUrl": "https://www.stmoonar.me",
 	"isDesktopOnly": false
 }

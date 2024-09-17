@@ -1,6 +1,17 @@
-# Obsidian Minio Uploader Plugin
+# Obsidian Minio Plus Plugin
 
 ### [English](./README.md) | 中文
+
+这个仓库是从 [Obsidian Minio Uploader Plugin](https://github.com/seebin/obsidian-minio-uploader-plugin) fork 过来的，并添加了一些新功能。
+- 支持基础路径
+- 支持自定义域名
+
+在未来，我会为这个插件添加更多功能。
+- 支持删除文件
+
+---
+
+以下是 README.md 文件的原始内容。
 
 将图片、视频、音频、PDF等文件上传到 Minio OSS 中，而不是复制到本地。减少本地磁盘占用大小，提高多设备之间同步的效率。
 

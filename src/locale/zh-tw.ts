@@ -9,6 +9,11 @@ export default {
 	'Enter your region': '存儲地區',
 	'Enter your bucket': '存储桶',
 	'Enter your port': '端口號',
+	'Enter your base path(e.g. /path)': '基礎路徑(例如 /path)',
+	'Enter your custom domain(e.g. https://minio.example.com)': '自定義域名(例如 https://minio.example.com)',
+
+	'Base path': '基礎路徑',
+	'Custom domain': '自定義域名',
 
 	'Object rules': '對象規則',
 	'Object naming rules': 'Object 命名規則',

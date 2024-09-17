@@ -9,8 +9,10 @@ interface MinioPluginSettings {
 	secretKey: string;
 	region: string;
 	bucket: string;
+	basepath: string;
 	endpoint: string;
 	port: number;
+	customDomain: string;
 	useSSL: boolean;
 	imgPreview: boolean;
 	videoPreview: boolean;
@@ -25,8 +27,10 @@ const DEFAULT_SETTINGS: MinioPluginSettings = {
 	secretKey: '',
 	region: '',
 	endpoint: '',
-	port: 443,
+	port: 9001,
+	customDomain: '',
 	bucket: '',
+	basepath: '',
 	useSSL: true,
 	imgPreview: true,
 	videoPreview: true,
@@ -62,7 +66,7 @@ export default class MinioUploaderPlugin extends Plugin {
 				input.onchange = async (event: Event) => {
 					const file = (event.target as any)?.files[0]
 
-					const { endpoint, port, useSSL, bucket } = this.settings
+					const { endpoint, port, useSSL, bucket, basepath } = this.settings
 					const host = `http${useSSL ? 's' : ''}://${endpoint}${port === 443 || port === 80 ? '' : ':' + port}`
 					let replaceText = `[${t('Uploading')}：0%](${file.name})\n`;
 					editor.replaceSelection(replaceText);
@@ -72,7 +76,11 @@ export default class MinioUploaderPlugin extends Plugin {
 						this.replaceText(editor, replaceText, replaceText2)
 						replaceText = replaceText2
 					})
-					const url = `${host}/${bucket}/${objectName}`
+					var url = `${host}/${bucket}/${objectName}`
+					if (this.settings.customDomain) {
+						url = `${this.settings.customDomain}/${bucket}/${objectName}`
+					}
+
 					this.replaceText(editor, replaceText, this.wrapFileDependingOnType(this.getFileType(file), url, file.name))
 				}
 				input.click()
@@ -137,7 +145,10 @@ export default class MinioUploaderPlugin extends Plugin {
 			this.replaceText(editor, replaceText, replaceText2)
 			replaceText = replaceText2
 		})
-		const url = `${host}/${bucket}/${objectName}`
+		var url = `${host}/${bucket}/${objectName}`
+		if (this.settings.customDomain) {
+			url = `${this.settings.customDomain}/${bucket}/${objectName}`
+		}
 		this.replaceText(editor, replaceText, this.wrapFileDependingOnType(this.getFileType(file), url, file.name))
 	}
 
@@ -169,6 +180,11 @@ export default class MinioUploaderPlugin extends Plugin {
 				objectName += moment().format('YYYYMMDDHHmmSS') + '_' + file.name
 				break;
 			default:
+		}
+		if (this.settings.basepath) {
+			// remove the first '/' and the last '/' if it exists
+			this.settings.basepath = this.settings.basepath.replace(/^\/|\/$/g, '')
+			objectName = this.settings.basepath + '/' + objectName
 		}
 		return objectName
 	}
@@ -321,6 +337,8 @@ class MinioSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
+		containerEl.createEl("h3", { text: t("Minio OSS") });
+		containerEl.createEl("br");
 		new Setting(containerEl)
 			.setName('Access key')
 			.setDesc(t('Required'))
@@ -366,6 +384,16 @@ class MinioSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 		new Setting(containerEl)
+			.setName('Base path')
+			.setDesc(t('Optional'))
+			.addText(text => text
+				.setPlaceholder(t('Enter your base path(e.g. /path)'))
+				.setValue(this.plugin.settings.basepath)
+				.onChange(async (value) => {
+					this.plugin.settings.basepath = value;
+					await this.plugin.saveSettings();
+				}));
+		new Setting(containerEl)
 			.setName('Endpoint')
 			.setDesc(t('Required'))
 			.addText(text => text
@@ -383,6 +411,16 @@ class MinioSettingTab extends PluginSettingTab {
 				.setValue(this.plugin.settings.port + '')
 				.onChange(async (value) => {
 					this.plugin.settings.port = parseInt(value);
+					await this.plugin.saveSettings();
+				}));
+		new Setting(containerEl)
+			.setName('Custom domain')
+			.setDesc(t('Optional'))
+			.addText(text => text
+				.setPlaceholder(t('Enter your custom domain(e.g. https://minio.example.com)'))
+				.setValue(this.plugin.settings.customDomain)
+				.onChange(async (value) => {
+					this.plugin.settings.customDomain = value;
 					await this.plugin.saveSettings();
 				}));
 		new Setting(containerEl)
